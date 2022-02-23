@@ -5,17 +5,25 @@ const linksSocialMedia = {
     instagram: 'lyncaster_lyn'
 }
 
-function changeSocialMediaLinks(){
+
+changeSocialMediaLinks = () =>{
     for(let li of socialLinks.children){ 
         const social = li.getAttribute('class')
         li.children[0].href = `https://${social}.com/${linksSocialMedia[social]}` 
     }
-    const gitName = document.querySelector('a.github')
-    gitName.innerHTML = `<img src="images/github.svg" alt="logo github">${linksSocialMedia.github}`
-    gitName.href = `https://github.com/${linksSocialMedia[github]}`
 }
-
+//consumo da API publica do Github
+getGitHubProfileInfos = () => {
+    const url = `https://api.github.com/users/${linksSocialMedia.github}`
+    fetch(url)
+    .then(response => response.json())
+    .then(data => {
+        userAvatar.src = data.avatar_url            
+        userName.textContent = data.name
+        gitUser.href = data.html_url
+        userLinkNameGithub.textContent = data.login
+        bioUser.textContent = data.bio
+    })
+}
 changeSocialMediaLinks()
-
-
-
+getGitHubProfileInfos()
